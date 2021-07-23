@@ -1,3 +1,5 @@
 manim_gl/
 ManimCE/
 pycairo/
+Test/__pycache__/
+Test/media/
