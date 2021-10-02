@@ -60,3 +60,23 @@ class MuchosObjetos(Scene):
         self.play(DrawBorderThenFill(circulo))
         self.play(circulo.animate.set_width(1))
         self.play(Transform(circulo, triangulo), run_time=2)
+
+
+class Updaters(Scene):
+    def construct(self):
+        rectangulo = RoundedRectangle(stroke_width=8,
+                                      stoke_color=WHITE,
+                                      fill_color=BLUE_D,
+                                      width=4.5,
+                                      height=2).shift(UP*3+LEFT*4)
+        texto = Tex("\\frac{3}{4} = 0.75").set_color_by_gradient(GREEN,
+                                                                 PINK).set_height(1.5)
+        texto.move_to(rectangulo.get_center())
+        texto.add_updater(lambda x: x.move_to(rectangulo.get_center()))
+
+        self.play(FadeIn(rectangulo))
+        self.play(Write(texto))
+        self.play(rectangulo.animate.shift(RIGHT*1.5 + DOWN*5), run_time=3)
+        self.wait()
+        texto.clear_updaters()
+        self.play(rectangulo.animate.shift(LEFT*2 + UP*1), run_time=3)
