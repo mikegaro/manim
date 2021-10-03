@@ -1,7 +1,7 @@
 try:
-    from manim import *
+    from manim import *  # Para manimCE
 except:
-    from manimlib import *
+    from manimlib import *  # Para manim_gl
 
 
 class CuboConTex(Scene):
@@ -80,3 +80,59 @@ class Updaters(Scene):
         self.wait()
         texto.clear_updaters()
         self.play(rectangulo.animate.shift(LEFT*2 + UP*1), run_time=3)
+
+
+# LAMENTABLEMENTE ESTA SOLO CORRE EN manimCE por el tema del .next_to()
+class AlgoMasComplejo(Scene):
+    def construct(self):
+        r = ValueTracker(0.5)
+        circulo = always_redraw(lambda: Circle(radius=r.get_value(),
+                                               stroke_color=YELLOW,
+                                               stroke_width=5))
+
+        line_radius = always_redraw(lambda: Line(start=circulo.get_center(),
+                                                 end=circulo.get_bottom(),
+                                                 stroke_color=RED_B,
+                                                 stroke_width=10)
+                                    )
+        linea_circunferencia = always_redraw(lambda: Line(stroke_color=YELLOW,
+                                                          stroke_width=5).set_length(2*r.get_value()*PI).next_to(circulo,
+                                                                                                                 DOWN,
+                                                                                                                 buff=0.2))
+
+        triangulo = always_redraw(lambda: Polygon(circulo.get_top(),
+                                                  circulo.get_left(),
+                                                  circulo.get_right(),
+                                                  fill_color=GREEN))
+
+        self.play(LaggedStart(Create(circulo),
+                              DrawBorderThenFill(line_radius),
+                              DrawBorderThenFill(triangulo),
+                              run_time=4,
+                              lag_ratio=0.75))
+        self.play(ReplacementTransform(circulo.copy(),
+                                       linea_circunferencia),
+                  runtime=2)
+        self.play(r.animate.set_value(2),
+                  runtime=5)
+
+
+class LeydeLaGravitacion(Scene):
+    def construct(self):
+        circulo = Circle(stroke_color=BLUE,
+                         stroke_width=5,
+                         fill_color=BLUE_A,
+                         fill_opacity=0.3)
+        rectangulo = RoundedRectangle(stroke_width=4,
+                                      stoke_color=WHITE,
+                                      fill_color=BLUE,
+                                      width=5.5,
+                                      height=2)
+        texto = MathTex("F = G\\frac{m_{1}m_{2}}{r^{2}}").set_color_by_gradient(GREEN,
+                                                                                PINK).set_height(1.5)
+        texto.move_to(rectangulo.get_center())
+        texto.add_updater(lambda x: x.move_to(rectangulo.get_center()))
+        self.play(FadeIn(rectangulo))
+        self.play(Write(texto))
+        self.play(rectangulo.animate.shift(UP*3), runtime=0.7)
+        self.play(DrawBorderThenFill(circulo), runtime=0.5)
