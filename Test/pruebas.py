@@ -119,20 +119,22 @@ class AlgoMasComplejo(Scene):
 
 class LeydeLaGravitacion(Scene):
     def construct(self):
-        circulo = Circle(stroke_color=BLUE,
-                         stroke_width=5,
-                         fill_color=BLUE_A,
-                         fill_opacity=0.3)
-        rectangulo = RoundedRectangle(stroke_width=4,
-                                      stoke_color=WHITE,
+        circulo = Circle(stroke_color=YELLOW,
+                         stroke_width=5)
+        rectangulo = RoundedRectangle(stoke_color=WHITE,
                                       fill_color=BLUE,
-                                      width=5.5,
-                                      height=2)
-        texto = MathTex("F = G\\frac{m_{1}m_{2}}{r^{2}}").set_color_by_gradient(GREEN,
-                                                                                PINK).set_height(1.5)
+                                      width=4,
+                                      height=1.2)
+        texto = MathTex(
+            "\\int_{0}^{\\infty} F = G\\frac{m_{1}m_{2}}{r^{2}}")
+        textodos = Tex("Hola a todos").shift(DOWN*2.5 + LEFT*2)
+        textotres = Text("Quiubo").shift(DOWN*2.5 + RIGHT*2)
         texto.move_to(rectangulo.get_center())
         texto.add_updater(lambda x: x.move_to(rectangulo.get_center()))
-        self.play(FadeIn(rectangulo))
+        self.play(Create(rectangulo))
         self.play(Write(texto))
-        self.play(rectangulo.animate.shift(UP*3), runtime=0.7)
+        self.play(rectangulo.animate.shift(UP*2.5), runtime=0.7)
         self.play(DrawBorderThenFill(circulo), runtime=0.5)
+        self.play(Create(textodos), run_time=2)
+        self.play(Create(textotres), run_time=2)
+        self.wait(duration=5)
