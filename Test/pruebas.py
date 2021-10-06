@@ -119,22 +119,28 @@ class AlgoMasComplejo(Scene):
 
 class LeydeLaGravitacion(Scene):
     def construct(self):
-        circulo = Circle(stroke_color=YELLOW,
+        circulo = Circle(radius=1, stroke_color=YELLOW,
                          stroke_width=5)
         rectangulo = RoundedRectangle(stoke_color=WHITE,
                                       fill_color=BLUE,
                                       width=4,
-                                      height=1.2)
+                                      height=1.4)
         texto = MathTex(
-            "\\int_{0}^{\\infty} F = G\\frac{m_{1}m_{2}}{r^{2}}")
-        textodos = Tex("Hola a todos").shift(DOWN*2.5 + LEFT*2)
-        textotres = Text("Quiubo").shift(DOWN*2.5 + RIGHT*2)
+            "\\int_{0}^{\\infty} F = G\\frac{m_{1}m_{2}}{r^{2}}").scale(scale_factor=0.8)
+
         texto.move_to(rectangulo.get_center())
         texto.add_updater(lambda x: x.move_to(rectangulo.get_center()))
         self.play(Create(rectangulo))
         self.play(Write(texto))
         self.play(rectangulo.animate.shift(UP*2.5), runtime=0.7)
         self.play(DrawBorderThenFill(circulo), runtime=0.5)
-        self.play(Create(textodos), run_time=2)
-        self.play(Create(textotres), run_time=2)
+        flecha_uno = Arrow(buff=1.5, start=circulo.get_center(),
+                           end=RIGHT*2)
+        dot_uno = Dot(point=circulo.get_center())
+
+        flecha_uno.add_updater(lambda x: x.move_to(
+            circulo.get_center()+RIGHT))
+        dot_uno.add_updater(lambda x: x.move_to(circulo.get_center()))
+        self.play(Create(flecha_uno), Create(dot_uno),
+                  circulo.animate.shift(LEFT*3), run_time=1)
         self.wait(duration=5)
