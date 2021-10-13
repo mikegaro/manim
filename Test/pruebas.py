@@ -1,3 +1,6 @@
+from numpy import dot
+
+
 try:
     from manim import *  # Para manimCE
 except:
@@ -119,28 +122,63 @@ class AlgoMasComplejo(Scene):
 
 class LeydeLaGravitacion(Scene):
     def construct(self):
-        circulo = Circle(radius=1, stroke_color=YELLOW,
-                         stroke_width=5)
+        circulo = Circle(radius=0.5,
+                         stroke_color=YELLOW,
+                         stroke_width=5).move_to(DOWN*0.5)
         rectangulo = RoundedRectangle(stoke_color=WHITE,
                                       fill_color=BLUE,
-                                      width=4,
-                                      height=1.4)
+                                      width=3.5,
+                                      height=1.2)
         texto = MathTex(
-            "\\int_{0}^{\\infty} F = G\\frac{m_{1}m_{2}}{r^{2}}").scale(scale_factor=0.8)
+            "F = G\\frac{m_{1}m_{2}}{r^{2}}").scale(scale_factor=0.7)
 
         texto.move_to(rectangulo.get_center())
         texto.add_updater(lambda x: x.move_to(rectangulo.get_center()))
         self.play(Create(rectangulo))
         self.play(Write(texto))
-        self.play(rectangulo.animate.shift(UP*2.5), runtime=0.7)
-        self.play(DrawBorderThenFill(circulo), runtime=0.5)
-        flecha_uno = Arrow(buff=1.5, start=circulo.get_center(),
-                           end=RIGHT*2)
+        self.play(rectangulo.animate.shift(UP*2.5),
+                  runtime=0.7)
+        self.play(DrawBorderThenFill(circulo),
+                  runtime=0.5)
+        circulo_dos = Circle(radius=0.5,
+                             stroke_color=YELLOW,
+                             stroke_width=5).move_to(DOWN*0.5)
+        self.add(circulo_dos)
+
+        flecha_uno = Arrow(buff=1.5,
+                           start=circulo.get_center(),
+                           end=circulo.get_center()+RIGHT*2)
         dot_uno = Dot(point=circulo.get_center())
 
-        flecha_uno.add_updater(lambda x: x.move_to(
-            circulo.get_center()+RIGHT))
+        flecha_uno.add_updater(lambda x: x.move_to(circulo.get_center()+RIGHT))
         dot_uno.add_updater(lambda x: x.move_to(circulo.get_center()))
-        self.play(Create(flecha_uno), Create(dot_uno),
-                  circulo.animate.shift(LEFT*3), run_time=1)
-        self.wait(duration=5)
+
+        flecha_dos = Arrow(buff=1.5,
+                           start=circulo_dos.get_center(),
+                           end=circulo_dos.get_center()+LEFT*2)
+        dot_dos = Dot(point=circulo_dos.get_center())
+        flecha_dos.add_updater(lambda x: x.move_to(
+            circulo_dos.get_center()+LEFT))
+        dot_dos.add_updater(lambda x: x.move_to(circulo_dos.get_center()))
+        self.play(Create(dot_uno),
+                  Create(dot_dos),
+                  run_time=0.5)
+        self.play(Create(flecha_uno),
+                  Create(flecha_dos),
+                  circulo.animate.shift(LEFT*3),
+                  circulo_dos.animate.shift(RIGHT*3),
+                  run_time=2)
+        self.wait(duration=3)
+
+
+class RotandoEnCirculo(Scene):
+    def construct(self):
+        punto = Dot()
+        circulo = Circle(radius=1)
+        punto.move_to(RIGHT)
+        self.play(Create(punto), Create(circulo))
+        self.wait(duration=1)
+        self.play(Rotate(punto,
+                         about_point=circulo.get_center(),
+                         angle=4*PI),
+                  run_time=5)
