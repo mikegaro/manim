@@ -123,8 +123,8 @@ class AlgoMasComplejo(Scene):
 class LeydeLaGravitacion(Scene):
     def construct(self):
         circulo = Circle(radius=0.5,
-                         stroke_color=YELLOW,
-                         stroke_width=5).move_to(DOWN*0.5)
+                         stroke_color=BLUE,
+                         stroke_width=5).move_to(DOWN*1)
         rectangulo = RoundedRectangle(stoke_color=WHITE,
                                       fill_color=BLUE,
                                       width=3.5,
@@ -141,33 +141,44 @@ class LeydeLaGravitacion(Scene):
         self.play(DrawBorderThenFill(circulo),
                   runtime=0.5)
         circulo_dos = Circle(radius=0.5,
-                             stroke_color=YELLOW,
-                             stroke_width=5).move_to(DOWN*0.5)
+                             stroke_color=BLUE,
+                             stroke_width=5).move_to(DOWN*1)
         self.add(circulo_dos)
 
-        flecha_uno = Arrow(buff=1.5,
+        flecha_uno = Arrow(buff=1,
                            start=circulo.get_center(),
-                           end=circulo.get_center()+RIGHT*2)
+                           end=circulo.get_center()+RIGHT*1)
         dot_uno = Dot(point=circulo.get_center())
 
-        flecha_uno.add_updater(lambda x: x.move_to(circulo.get_center()+RIGHT))
+        flecha_uno.add_updater(lambda x: x.move_to(
+            circulo.get_center()+RIGHT*0.5))
         dot_uno.add_updater(lambda x: x.move_to(circulo.get_center()))
 
         flecha_dos = Arrow(buff=1.5,
                            start=circulo_dos.get_center(),
-                           end=circulo_dos.get_center()+LEFT*2)
+                           end=circulo_dos.get_center()+LEFT*1)
         dot_dos = Dot(point=circulo_dos.get_center())
         flecha_dos.add_updater(lambda x: x.move_to(
-            circulo_dos.get_center()+LEFT))
+            circulo_dos.get_center()+LEFT*0.5))
         dot_dos.add_updater(lambda x: x.move_to(circulo_dos.get_center()))
         self.play(Create(dot_uno),
                   Create(dot_dos),
                   run_time=0.5)
         self.play(Create(flecha_uno),
                   Create(flecha_dos),
-                  circulo.animate.shift(LEFT*3),
-                  circulo_dos.animate.shift(RIGHT*3),
+                  circulo.animate.shift(LEFT*1.4),
+                  circulo_dos.animate.shift(RIGHT*1.4),
                   run_time=2)
+        self.play(Rotate(circulo,
+                         about_point=ORIGIN+DOWN,
+                         angle=2*PI),
+                  Rotate(circulo_dos,
+                         about_point=ORIGIN+DOWN,
+                         angle=2*PI),
+                  Rotate(
+                      flecha_dos, about_point=circulo_dos.get_center(), angle=2*PI),
+                  Rotate(flecha_uno, about_point=circulo.get_center(), angle=2*PI),
+                  run_time=15)
         self.wait(duration=3)
 
 
@@ -180,5 +191,5 @@ class RotandoEnCirculo(Scene):
         self.wait(duration=1)
         self.play(Rotate(punto,
                          about_point=circulo.get_center(),
-                         angle=4*PI),
-                  run_time=5)
+                         angle=2*PI),
+                  run_time=3)
