@@ -1,6 +1,3 @@
-from numpy import dot
-
-
 try:
     from manim import *  # Para manimCE
 except:
@@ -189,7 +186,3 @@ class RotandoEnCirculo(Scene):
         punto.move_to(RIGHT)
         self.play(Create(punto), Create(circulo))
         self.wait(duration=1)
-        self.play(Rotate(punto,
-                         about_point=circulo.get_center(),
-                         angle=2*PI),
-                  run_time=3)
