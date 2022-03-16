@@ -1,12 +1,10 @@
-try:
-    from manim import *  # Para manimCE
-except:
-    from manimlib import *  # Para manim_gl
+from manim import *  # Para manim_gl
+import manim
 
 
 class CuboConTex(Scene):
     def construct(self):
-        newton_first = Tex(r"\vec{F} = m\vec{a}")
+        newton_first = MathTex(r"\vec{F} = m\vec{a}")
         self.add(newton_first)
         self.play(newton_first.animate.shift(UP*2),
                   run_time=1)
@@ -69,8 +67,8 @@ class Updaters(Scene):
                                       fill_color=BLUE_D,
                                       width=4.5,
                                       height=2).shift(UP*3+LEFT*4)
-        texto = Tex("\\frac{3}{4} = 0.75").set_color_by_gradient(GREEN,
-                                                                 PINK).set_height(1.5)
+        texto = MathTex("\\frac{3}{4} = 0.75").set_color_by_gradient(GREEN,
+                                                                     PINK).set_height(1.5)
         texto.move_to(rectangulo.get_center())
         texto.add_updater(lambda x: x.move_to(rectangulo.get_center()))
 
@@ -183,6 +181,43 @@ class RotandoEnCirculo(Scene):
     def construct(self):
         punto = Dot()
         circulo = Circle(radius=1)
-        punto.move_to(RIGHT)
+        punto.move_to(circulo.get_center() + circulo.radius*RIGHT)
         self.play(Create(punto), Create(circulo))
-        self.wait(duration=1)
+        self.play(Rotate(punto,
+                         about_point=circulo.get_center(),
+                         angle=PI),
+                  run_time=3)
+        self.wait(duration=3)
+
+
+class TitleExample(Scene):
+    def construct(self):
+        banner = ManimBanner()
+        title = Title(f"Manim version {manim.__version__}")
+        self.add(banner, title)
+
+
+class DecimalMatrixExample(Scene):
+    def construct(self):
+        m0 = DecimalMatrix(
+            [[3.456, 2.122], [33.2244, 12]],
+            element_to_mobject_config={"num_decimal_places": 2},
+            left_bracket="\{",
+            right_bracket="\}")
+        self.add(m0)
+
+
+class LaTeXMathFonts(Scene):
+    def construct(self):
+        tex = Tex(
+            r"$x^2 + y^2 = z^2$",
+            tex_template=TexFontTemplates.french_cursive,
+            font_size=144,
+        )
+        self.play(Create(tex),
+                  run_time=3)
+
+
+class RespuestaTransitoria(Scene):
+    def construct(self):
+        texto = Text("")

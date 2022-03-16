@@ -15,3 +15,4 @@ Actualmente existen 3 versiones de Manim
   -> La version configurada con PyCairo (ManimCairo)
 
 Todas las escenas las desarrollé usando la version de la comunidad (ManimCE), es posible que tambien corran en ManimGL, sin embargo, para formalizar y debuggear el framework, la comunidad de Manim hizo ligeras modificaciones al codigo fuente de Grant que pueden llegar a impedir que las escenas se rendericen en ManimGL. Sin embargo haciendo muy pocos cambios al codigo es posible renderizarlo.
+
