@@ -1,5 +1,4 @@
-from manim import *  # Para manim_gl
-import manim
+from manim import *
 
 
 class CuboConTex(Scene):
@@ -204,7 +203,8 @@ class DecimalMatrixExample(Scene):
             element_to_mobject_config={"num_decimal_places": 2},
             left_bracket="\{",
             right_bracket="\}")
-        self.add(m0)
+        self.play(Create(m0))
+        self.wait()
 
 
 class LaTeXMathFonts(Scene):
@@ -220,4 +220,27 @@ class LaTeXMathFonts(Scene):
 
 class RespuestaTransitoria(Scene):
     def construct(self):
-        texto = Text("")
+        texto = MarkupText('Hola')
+        self.play(Create(texto), run_time=3)
+
+
+class Example1Text(Scene):
+    def construct(self):
+        text = MarkupText('Hello world').scale(3)
+        self.add(text)
+
+
+class LogScalingExample(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[0, 10, 1],
+            y_range=[-2, 6, 1],
+            tips=False,
+            axis_config={"include_numbers": True},
+            y_axis_config={"scaling": LogBase(custom_labels=True)},
+        )
+
+        # x_min must be > 0 because log is undefined at 0.
+        graph = ax.plot(lambda x: x ** 2,
+                        x_range=[0.001, 10], use_smoothing=False)
+        self.play(Create(ax), Create(graph))
